@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: isis-api-buildconfig
+  annotations:
+    description: >
+      This is Thoth Isis API BuildConfig, this template is meant to be used by
+      Bots, but could also be used by humans...
+    openshift.io/display-name: 'Thoth Core: Isis API BuildConfig'
+    version: 0.4.2
+    tags: thoth,thoth-isis-api,ai-stacks,aistacks
+    template.openshift.io/documentation-url: https://github.com/Thoth-Station/
+    template.openshift.io/long-description: >
+      This is Thoth Isis API BuildConfig, this template is meant to be used
+      by Bots, but could also be used by humans...
+    template.openshift.io/provider-display-name: Red Hat, Inc.
+  labels:
+    template: isis-api-buildconfig
+    app: thoth
+    component: isis-api
+
+objects:
+  - apiVersion: v1
+    kind: BuildConfig
+    metadata:
+      name: isis-api
+      labels:
+        app: thoth
+        component: isis-api
+    spec:
+      successfulBuildsHistoryLimit: 1
+      failedBuildsHistoryLimit: 2
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          cpu: 1000m
+          memory: 768Mi
+      output:
+        to:
+          kind: ImageStreamTag
+          name: "isis-api:${IMAGE_STREAM_TAG}"
+      source:
+        type: Git
+        git:
+          uri: ${GITHUB_URL}
+          ref: ${GITHUB_REF}
+      strategy:
+        type: Source
+        sourceStrategy:
+          from:
+            kind: ImageStreamTag
+            name: python-36-centos7:latest
+          env:
+            - name: ENABLE_PIPENV
+              value: '1'
+            - name: UPGRADE_PIP_TO_LATEST
+              value: ''
+            - name: WEB_CONCURRENCY
+              value: '4'
+      triggers:
+        - type: ImageChange
+          imageChange: {}
+
+parameters:
+  - description: Name of the github repository for Thoth's Isis API
+    displayName: Git Repository
+    required: true
+    name: GITHUB_URL
+    value: 'https://github.com/thoth-station/isis-api'
+
+  - description: Git reference to be used for Thoth's Isis API
+    displayName: Git Reference
+    required: true
+    name: GITHUB_REF
+    value: 'master'
+
+  - description: >
+      Tag of the output ImageStream the resulting container image should go to
+    displayName: ImageStream Tag
+    required: true
+    name: IMAGE_STREAM_TAG
+    value: 'latest'
