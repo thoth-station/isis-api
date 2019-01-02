@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+"""This is TODO as it is missing a docstring."""
+
 import os
 import sys
 import logging
@@ -37,6 +39,8 @@ from thoth.storages.result_base import ResultStorageBase
 class TaggingModelStore(ResultStorageBase):
     """Adapter for persisting and retrieving tagging model."""
 
+    # TODO check in which way we can utilize KubeFlow or... for this
+
     RESULT_TYPE = "tagging"
     SCHEMA = None
 
@@ -44,6 +48,7 @@ class TaggingModelStore(ResultStorageBase):
     _MODEL_FILE = "model.ckpt"
 
     def retrieve(self, dst_path: str) -> None:
+        """Retrieve model."""
         for object_key in self.ceph.get_document_listing():
             content = self.ceph.retrieve_blob(object_key)
             with open(os.path.join(dst_path, object_key), "wb") as output_file:
@@ -66,7 +71,9 @@ class TaggingModelStore(ResultStorageBase):
         if "all_model_checkpoint_paths" in checkpoint_content:
             checkpoint_content["all_model_checkpoint_paths"] = os.path.join(
                 os.getcwd(),
-                checkpoint_content["all_model_checkpoint_paths"].rsplit("/", maxsplit=1)[-1],
+                checkpoint_content["all_model_checkpoint_paths"].rsplit(
+                    "/", maxsplit=1
+                )[-1],
             )
 
         with open(checkpoint_path, "w") as checkpoint_file:
@@ -74,6 +81,7 @@ class TaggingModelStore(ResultStorageBase):
                 checkpoint_file.write(f'{key}: "{value}"\n')
 
     def store(self):
+        """Store model to disk."""
         # TODO: persist model on creation
         raise NotImplementedError
 

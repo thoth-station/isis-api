@@ -18,4 +18,3 @@ paths:
       responses:
         200:
           description: The service is up and running.
-
