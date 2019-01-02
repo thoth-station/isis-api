@@ -23,4 +23,5 @@ _LOGGER = logging.getLogger(__name__)
 
 
 def get_test() -> dict:
+    """Stub this method."""
     return {"Isis": "Hello, world!"}
