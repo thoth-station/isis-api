@@ -31,20 +31,6 @@ objects:
       port:
         targetPort: isis-api
 
-  - kind: Route
-    apiVersion: v1
-    metadata:
-      name: isis-tb
-      labels:
-        app: thoth
-        component: isis-api
-    spec:
-      to:
-        kind: Service
-        name: isis-api
-      port:
-        targetPort: tensorboard
-
   - kind: Service
     apiVersion: v1
     metadata:
@@ -215,41 +201,6 @@ objects:
                 initialDelaySeconds: 5
                 periodSeconds: 60
                 timeoutSeconds: 10
-            #- name: tensorboard
-            #  env:
-            #    - name: APP_SCRIPT
-            #      value: 'tensorboard.sh'
-            #    - name: TF_LOGDIR
-            #      value: '/opt/app-root/src/model'
-            #  volumeMounts:
-            #    - mountPath: /opt/app-root/src/model
-            #      name: model-volume
-            #  ports:
-            #    - containerPort: 6006
-            #      protocol: TCP
-            #  resources:
-            #    requests:
-            #      memory: "1Gi"
-            #      cpu: "500m"
-            #    limits:
-            #      memory: "1Gi"
-            #      cpu: "500m"
-            #  readinessProbe:
-            #    httpGet:
-            #      path: '/'
-            #      port: 6006
-            #      scheme: HTTP
-            #    initialDelaySeconds: 5
-            #    periodSeconds: 10
-            #    timeoutSeconds: 10
-            #  livenessProbe:
-            #    httpGet:
-            #      path: '/'
-            #      port: 6006
-            #      scheme: HTTP
-            #    initialDelaySeconds: 5
-            #    periodSeconds: 60
-            #    timeoutSeconds: 10
       test: false
       triggers:
         - type: ConfigChange

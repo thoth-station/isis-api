@@ -35,7 +35,4 @@ Deployment
 The service is built using OpenShift's s2i. On deployment, there is first run
 an init container that downloads model from Ceph/S3 (created by one of the
 flows defined by `selinon-worker
-<https;//github.com/thoth-station/selinon-worker>`_ flows) and then there are
-run two applications - an API service exposing REST endpoints and an
-TensorBoard that serves the given model for debugging and exploration.
-
+<https;//github.com/thoth-station/selinon-worker>`_ flows).
