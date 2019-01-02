@@ -1,0 +1,21 @@
+swagger: "2.0"
+info:
+  title: Isis API
+  version: "0.1"
+basePath: "/api/v1/"
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /test:
+    get:
+      tags: ['Debug']
+      x-swagger-router-controller: isis.api_v1
+      operationId: get_test
+      summary: >
+        A test of Isis API
+      responses:
+        200:
+          description: The service is up and running.
+
