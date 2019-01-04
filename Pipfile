@@ -17,6 +17,7 @@ prometheus-flask-exporter = "*"
 requests = "*"
 tensorflow = "*"
 pyyaml = "*"
+thoth-worker = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"

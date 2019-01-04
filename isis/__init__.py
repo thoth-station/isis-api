@@ -18,6 +18,6 @@
 """Thoth's Isis API service."""
 
 
-__name__ = 'isis'
-__author__ = 'Fridolin Pokorny <fridolin@redhat.com>'
-__version__ = '0.0.1'
+__name__ = "isis"
+__author__ = "Fridolin Pokorny <fridolin@redhat.com>"
+__version__ = "0.0.1"

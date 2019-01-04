@@ -23,5 +23,7 @@ import os
 class Configuration:
     """Configuration of Isis API service."""
 
-    APP_SECRET_KEY = os.environ['ISIS_API_APP_SECRET_KEY']
-    SWAGGER_YAML_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'swagger.yaml')
+    APP_SECRET_KEY = os.environ["ISIS_API_APP_SECRET_KEY"]
+    SWAGGER_YAML_PATH = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), "swagger.yaml"
+    )
