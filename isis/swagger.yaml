@@ -8,13 +8,39 @@ consumes:
 produces:
   - application/json
 paths:
-  /test:
+  /similar-projects/{project_name}:
     get:
-      tags: ['Debug']
+      tags: ['project2vec']
       x-swagger-router-controller: isis.api_v1
-      operationId: get_test
-      summary: >
-        A test of Isis API
+      operationId: get_similar_projects
+      summary: Get similar projects to the given project.
+      parameters:
+        - name: project_name
+          in: path
+          type: string
+          description: Name of the project which should be checked for performance impact.
+          required: true
+        - name: count
+          in: query
+          required: false
+          type: integer
+          description: Number of similar projects that should be returned.
       responses:
         200:
-          description: The service is up and running.
+          description: A list of similar projects to the requested one.
+
+  /performance-impact/{project_name}:
+    get:
+      tags: ['project2vec']
+      x-swagger-router-controller: isis.api_v1
+      operationId: get_performance_impact
+      summary: Check if the given project can have any performance impact.
+      parameters:
+        - name: project_name
+          in: path
+          type: string
+          description: Name of the project which should be checked for performance impact.
+          required: true
+      responses:
+        200:
+          description: Performance impact score for the given project.

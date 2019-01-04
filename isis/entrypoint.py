@@ -38,7 +38,9 @@ from .configuration import Configuration
 init_logging(logging_env_var_start="ISIS_LOG_")
 
 _LOGGER = logging.getLogger("isis")
-_LOGGER.setLevel(logging.DEBUG if bool(int(os.getenv("ISIS_DEBUG", 0))) else logging.INFO)
+_LOGGER.setLevel(
+    logging.DEBUG if bool(int(os.getenv("ISIS_DEBUG", 0))) else logging.INFO
+)
 
 # Expose for uWSGI.
 app = connexion.App(__name__)
@@ -77,7 +79,11 @@ def api_v1():
 
 
 def _healthiness():
-    return jsonify({"status": "ready", "version": __version__}), 200, {"ContentType": "application/json"}
+    return (
+        jsonify({"status": "ready", "version": __version__}),
+        200,
+        {"ContentType": "application/json"},
+    )
 
 
 @app.route("/readiness")
@@ -112,7 +118,10 @@ def internal_server_error(exc):
         jsonify(
             {
                 "error": "Internal server error occurred, please contact administrator with provided details.",
-                "details": {"type": exc.__class__.__name__, "datetime": datetime2datetime_str(datetime.utcnow())},
+                "details": {
+                    "type": exc.__class__.__name__,
+                    "datetime": datetime2datetime_str(datetime.utcnow()),
+                },
             }
         ),
         500,
