@@ -35,4 +35,4 @@ Deployment
 The service is built using OpenShift's s2i. On deployment, there is first run
 an init container that downloads model from Ceph/S3 (created by one of the
 flows defined by `selinon-worker
-<https;//github.com/thoth-station/selinon-worker>`_ flows).
+<https://github.com/thoth-station/selinon-worker>`_ flows).

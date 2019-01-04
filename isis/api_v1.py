@@ -156,6 +156,5 @@ def _load_model():
             "Performance mask dimension does not conform to vector space dimension"
         )
 
-
 # Load model on start.
 _load_model()
