@@ -38,7 +38,7 @@ _VECTOR_SPACE = []
 _PERFORMANCE_MASK = []
 
 
-def get_similar_projects(
+def get_python_similar_projects(
     project_name: str, count: int = _DEFAULT_SIMILAR_COUNT
 ) -> tuple:
     """Get similar projects to the given project."""
@@ -59,6 +59,9 @@ def get_similar_projects(
 
     heap = []
     for idx, other_project_vector in enumerate(_VECTOR_SPACE):
+        if idx == project_idx:
+            continue
+
         distance = np.inner(project_vector, other_project_vector) / (
             norm(project_vector) * norm(other_project_vector)
         )
@@ -85,7 +88,7 @@ def get_similar_projects(
     return {"parameters": parameters, "result": result}, 200
 
 
-def get_performance_impact(project_name: str) -> tuple:
+def get_python_performance_impact(project_name: str) -> tuple:
     """Check if the given project can have performance impact."""
     parameters = locals()
 
@@ -100,7 +103,7 @@ def get_performance_impact(project_name: str) -> tuple:
 
     project_idx = _PROJECTS_BY_NAME[project_name]
     project_vector = _VECTOR_SPACE[project_idx]
-    performance_vector = project_vector and _PERFORMANCE_MASK
+    performance_vector = np.bitwise_and(project_vector, _PERFORMANCE_MASK)
 
     return (
         {
@@ -113,11 +116,30 @@ def get_performance_impact(project_name: str) -> tuple:
     )
 
 
+def get_python_list_projects(prefix: str = None):
+    """List Python projects."""
+    parameters = locals()
+
+    result = []
+    # As we use Python 3.6+, keys in dictionary preserve insert order - we insert projects by sorted project name.
+    for project_name in _PROJECTS_BY_NAME.keys():
+        if prefix and project_name.startswith(prefix):
+            result.append(project_name)
+        elif not prefix:
+            result.append(project_name)
+
+    return {
+        "parameters": parameters,
+        "projects": result
+    }
+
+
 def _load_model():
     """Load model to wsgi server worker."""
     global _PROJECTS_BY_NAME
     global _VECTOR_SPACE
     global _PERFORMANCE_MASK
+    global _PROJECTS_BY_IDX
 
     # Load project2vec.
 
