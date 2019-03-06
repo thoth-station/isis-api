@@ -31,9 +31,39 @@ _LOGGER = logging.getLogger(__name__)
 _DEFAULT_SIMILAR_COUNT = 10
 _MAX_SIMILAR_COUNT = 100
 
+_PROJECTS_BY_IDX = [
+    "absl-py",
+    "astor",
+    "gast",
+    "grpcio",
+    "markdown",
+    "numpy",
+    "protobuf",
+    "six",
+    "tensorboard",
+    "tensorflow",
+    "termcolor",
+    "werkzeug",
+    "wheel",
+]
+
 # Pre-loaded model.
-_PROJECTS_BY_NAME = {}
-_PROJECTS_BY_IDX = []
+_PROJECTS_BY_NAME = {project_name: idx for idx, project_name in enumerate(_PROJECTS_BY_IDX)}
+_PERFORMANCE_IMPACT = {
+    "absl-py": .5632,
+    "astor": .0,
+    "gast": .0,
+    "grpcio": .365,
+    "markdown": .0,
+    "numpy": .603,
+    "protobuf": .326,
+    "six": .0,
+    "tensorboard": .0,
+    "tensorflow": .89321,
+    "termcolor": .0,
+    "werkzeug": .0,
+    "wheel": .0
+}
 _VECTOR_SPACE = []
 _PERFORMANCE_MASK = []
 
@@ -43,6 +73,11 @@ def get_python_similar_projects(
 ) -> tuple:
     """Get similar projects to the given project."""
     parameters = locals()
+
+    return {
+        "error": "No implemented yet",
+        "paramters": parameters
+    }
 
     if project_name not in _PROJECTS_BY_NAME:
         return (
@@ -100,6 +135,16 @@ def get_python_performance_impact(project_name: str) -> tuple:
             },
             404,
         )
+
+    return (
+        {
+            "parameters": parameters,
+            "result": {
+                "performance_impact": _PERFORMANCE_IMPACT[project_name]
+            },
+        },
+        200,
+    )
 
     project_idx = _PROJECTS_BY_NAME[project_name]
     project_vector = _VECTOR_SPACE[project_idx]
@@ -179,4 +224,4 @@ def _load_model():
         )
 
 # Load model on start.
-_load_model()
+# _load_model()
