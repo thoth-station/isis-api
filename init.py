@@ -60,7 +60,7 @@ class TaggingModelStore(ResultStorageBase):
             return
 
         with open(checkpoint_path, "r") as checkpoint_file:
-            checkpoint_content = yaml.load(checkpoint_file)
+            checkpoint_content = yaml.safe_load(checkpoint_file)
 
         if "model_checkpoint_path" in checkpoint_content:
             checkpoint_content["model_checkpoint_path"] = os.path.join(
