@@ -23,6 +23,7 @@ import logging
 import yaml
 
 from thoth.common import init_logging
+from thoth.storages.result_base import ResultStorageBase
 
 # Configure global application logging using Thoth's init_logging.
 init_logging(logging_env_var_start="ISIS_LOG_")
@@ -33,7 +34,6 @@ _MODEL_PATH = os.path.join(os.getcwd(), "model")
 
 #################################################################################
 # TODO: move to storages
-from thoth.storages.result_base import ResultStorageBase
 
 
 class TaggingModelStore(ResultStorageBase):
