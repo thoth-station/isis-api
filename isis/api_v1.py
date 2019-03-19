@@ -159,7 +159,8 @@ def _load_model():
     for idx, vector in enumerate(_VECTOR_SPACE[1:]):
         if len(vector) != len(_VECTOR_SPACE[0]):
             raise ValueError(
-                f"Vectors in vector space have different dimensions - index 0 has {len(_VECTOR_SPACE[0])}, index {idx} has {len(vector)}"
+                f"Vectors in vector space have different dimensions - index 0 has "
+                f"{len(_VECTOR_SPACE[0])}, index {idx} has {len(vector)}"
             )
 
         if sum(vector) == 0:
@@ -177,6 +178,7 @@ def _load_model():
         raise ValueError(
             "Performance mask dimension does not conform to vector space dimension"
         )
+
 
 # Load model on start.
 _load_model()
