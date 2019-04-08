@@ -3,18 +3,39 @@ kind: Template
 metadata:
   name: isis-api-deployment
   annotations:
-    description: This is Thoth - Isis API
-    openshift.io/display-name: 'Thoth Core: Isis API'
-    version: 0.7.0
-    tags: poc,thoth,isis-api,ai-stacks,aistacks
+    description: "Thoth: Isis API"
+    openshift.io/display-name: "Thoth: Isis API"
+    version: 0.7.1
+    tags: thoth,isis-api,ai-stacks,aistacks
     template.openshift.io/documentation-url: https://github.com/Thoth-Station/
     template.openshift.io/long-description: >
       This template defines resources needed to deploy Thoth Isis API on OpenShift.
-    template.openshift.io/provider-display-name: Red Hat, Inc.
+    template.openshift.io/provider-display-name: "Red Hat, Inc."
   labels:
     template: isis-api-deployment
     app: thoth
     component: isis-api
+
+parameters:
+  - description: Registry the ImageStream to be use lives in
+    displayName: ImageStream Registry
+    required: true
+    name: IMAGE_STREAM_REGISTRY
+    # TODO adjust ansible role so that we dont need a default here
+    value: "docker-registry.default.svc:5000"
+
+  - description: Namespace the ImageStream to be use lives in
+    displayName: ImageStream Project
+    required: true
+    name: IMAGE_STREAM_NAMESPACE
+    # TODO adjust ansible role so that we dont need a default here
+    value: "thoth-infra-stage"
+
+  - description: Tag of the ImageStream to be use
+    displayName: ImageStream Tag
+    required: true
+    name: IMAGE_STREAM_TAG
+    value: "latest"
 
 objects:
   - kind: Route
@@ -73,13 +94,13 @@ objects:
               emptyDir: {}
           initContainers:
             - name: isis-model-download
-              image: isis-api
+              image: "${IMAGE_STREAM_REGISTRY}/${IMAGE_STREAM_NAMESPACE}/isis-api:${IMAGE_STREAM_TAG}"
               volumeMounts:
                 - mountPath: /opt/app-root/src/model
                   name: model-volume
               env:
                 - name: APP_SCRIPT
-                  value: 'init.py'
+                  value: "init.py"
                 - name: THOTH_DEPLOYMENT_NAME
                   valueFrom:
                     configMapKeyRef:
@@ -119,9 +140,10 @@ objects:
                   cpu: "500m"
           containers:
             - name: isis-api
+              image: "${IMAGE_STREAM_REGISTRY}/${IMAGE_STREAM_NAMESPACE}/isis-api:${IMAGE_STREAM_TAG}"
               env:
                 - name: APP_MODULE
-                  value: 'isis.entrypoint:app'
+                  value: "isis.entrypoint:app"
                 - name: ISIS_API_APP_SECRET_KEY
                   valueFrom:
                     secretKeyRef:
@@ -187,7 +209,7 @@ objects:
                   cpu: "250m"
               readinessProbe:
                 httpGet:
-                  path: '/readiness'
+                  path: "/readiness"
                   port: 8080
                   scheme: HTTP
                 initialDelaySeconds: 5
@@ -195,7 +217,7 @@ objects:
                 timeoutSeconds: 10
               livenessProbe:
                 httpGet:
-                  path: '/liveness'
+                  path: "/liveness"
                   port: 8080
                   scheme: HTTP
                 initialDelaySeconds: 5
@@ -213,11 +235,4 @@ objects:
               - isis-model-download
             from:
               kind: ImageStreamTag
-              name: 'isis-api:${IMAGE_STREAM_TAG}'
-
-parameters:
-  - description: Tag of the ImageStream to use
-    displayName: ImageStream Tag
-    required: true
-    name: IMAGE_STREAM_TAG
-    value: 'latest'
+              name: "${IMAGE_STREAM_NAMESPACE}/isis-api:${IMAGE_STREAM_TAG}""
