@@ -5,12 +5,13 @@ metadata:
   annotations:
     description: This is Thoth - Isis API
     openshift.io/display-name: 'Thoth Core: Isis API'
-    version: 0.7.0
+    version: 0.8.0
     tags: poc,thoth,isis-api,ai-stacks,aistacks
     template.openshift.io/documentation-url: https://github.com/Thoth-Station/
     template.openshift.io/long-description: >
       This template defines resources needed to deploy Thoth Isis API on OpenShift.
     template.openshift.io/provider-display-name: Red Hat, Inc.
+    thoth-station.ninja/template-version: 0.8.0
   labels:
     template: isis-api-deployment
     app: thoth
@@ -20,6 +21,8 @@ objects:
   - kind: Route
     apiVersion: v1
     metadata:
+      annotations:
+        thoth-station.ninja/template-version: 0.8.0
       name: isis-api
       labels:
         app: thoth
@@ -34,6 +37,8 @@ objects:
   - kind: Service
     apiVersion: v1
     metadata:
+      annotations:
+        thoth-station.ninja/template-version: 0.8.0
       labels:
         app: thoth
         component: isis-api
@@ -54,6 +59,8 @@ objects:
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
+      annotations:
+        thoth-station.ninja/template-version: 0.8.0
       labels:
         app: thoth
         component: isis-api
@@ -67,7 +74,7 @@ objects:
           labels:
             service: isis-api
         spec:
-          serviceAccountName: analyzer
+          serviceAccountName: isis-api
           volumes:
             - name: model-volume
               emptyDir: {}
