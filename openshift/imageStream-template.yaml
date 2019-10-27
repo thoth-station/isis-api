@@ -6,12 +6,13 @@ metadata:
     description: >
       This is Isis API ImageStream, this template is meant to be used by Bots, but could also be used by humans...
     openshift.io/display-name: 'Thoth Core: Isis API'
-    version: 0.5.0
+    version: 0.8.0
     tags: poc,thoth,isis-api,ai-stacks,aistacks
     template.openshift.io/documentation-url: https://github.com/Thoth-Station/
     template.openshift.io/long-description: >
       This is Isis API ImageStream, this template is meant to be used by Bots, but could also be used by humans...
     template.openshift.io/provider-display-name: Red Hat, Inc.
+    thoth-station.ninja/template-version: 0.8.0
   labels:
     template: isis-api-imagestream
     app: thoth
@@ -21,6 +22,8 @@ objects:
   - kind: ImageStream
     apiVersion: v1
     metadata:
+      annotations:
+        thoth-station.ninja/template-version: 0.8.0
       labels:
         app: thoth
         component: isis-api

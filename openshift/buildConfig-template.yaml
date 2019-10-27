@@ -7,13 +7,14 @@ metadata:
       This is Thoth Isis API BuildConfig, this template is meant to be used by
       Bots, but could also be used by humans...
     openshift.io/display-name: 'Thoth Core: Isis API BuildConfig'
-    version: 0.4.2
+    version: 0.8.0
     tags: thoth,thoth-isis-api,ai-stacks,aistacks
     template.openshift.io/documentation-url: https://github.com/Thoth-Station/
     template.openshift.io/long-description: >
       This is Thoth Isis API BuildConfig, this template is meant to be used
       by Bots, but could also be used by humans...
     template.openshift.io/provider-display-name: Red Hat, Inc.
+    thoth-station.ninja/template-version: 0.8.0
   labels:
     template: isis-api-buildconfig
     app: thoth
@@ -23,6 +24,8 @@ objects:
   - apiVersion: v1
     kind: BuildConfig
     metadata:
+      annotations:
+        thoth-station.ninja/template-version: 0.8.0
       name: isis-api
       labels:
         app: thoth
@@ -62,7 +65,7 @@ objects:
             - name: "THOTH_DRY_RUN"
               value: "1"
             - name: "THOTH_ADVISE"
-              value: "1"
+              value: ${THOTH_ADVISE}
             - name: "THAMOS_VERBOSE"
               value: "1"
             - name: "THAMOS_DEBUG"
@@ -98,3 +101,9 @@ parameters:
     required: true
     name: IMAGE_STREAM_TAG
     value: 'latest'
+
+  - description: Thamos Advise setup tag value
+    displayName: THOTH_ADVISE
+    required: true
+    name: THOTH_ADVISE
+    value: "1"
