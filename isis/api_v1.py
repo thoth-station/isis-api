@@ -128,10 +128,7 @@ def get_python_list_projects(prefix: str = None):
         elif not prefix:
             result.append(project_name)
 
-    return {
-        "parameters": parameters,
-        "projects": result
-    }
+    return {"parameters": parameters, "projects": result}
 
 
 def _load_model():
